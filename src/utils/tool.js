@@ -3,7 +3,6 @@ function checkUserInfoAuth () {
   new Promise().then()
   wx.getSetting({
     success: res => {
-      debugger;
       if (!!res.authSetting['scope.userInfo']) {// 未授权
         auditUserinfoStatus = false;
       } else {

@@ -97,7 +97,7 @@ export default {
       switch (pageKey) {
         case 'myMessage':
           wx.navigateTo({
-            url: "../my-message/main"
+            url: "./my-message/main"
           })
           break;
         case 'register':
@@ -107,50 +107,45 @@ export default {
             this.$tool.goToAuthPage();
           } else {
             wx.navigateTo({
-              url: "../register/main"
+              url: "./register/main"
             })
           }
           break;
         case 'auditResourse':
           wx.navigateTo({
-            url: "../audit-resource/main"
+            url: "./audit-resource/main"
           })
           break;
       }
     },
-    navigateToMessage () {
-      wx.navigateTo({
-        url: "../my-message/main"
-      })
-    },
     navigateToAbout () {
       wx.navigateTo({
-        url: "../about/main"
+        url: "./about/main"
       })
     },
     navigateToPersonal () {
       wx.navigateTo({
-        url: "../personal/main"
+        url: "./personal/main"
       })
     },
     navigateToRegister () {
       wx.navigateTo({
-        url: "../personal/main"
+        url: "./personal/main"
       })
     },
     navigateToAuditRegist () {
       wx.navigateTo({
-        url: "../auditRegistration/main"
+        url: "./auditRegistration/main"
       })
     },
     navigateToMyTeam () {
       console.log(1111)
       wx.navigateTo({
-        url: "../my-team/main"
+        url: "./my-team/main"
       })
     },
     navigateToLog () {
-      const url = '../logs/main'
+      const url = './logs/main'
       wx.navigateTo({ url })
     },
     getUserInfo () {
