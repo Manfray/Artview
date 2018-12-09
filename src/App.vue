@@ -18,9 +18,11 @@ export default {
     }
   },
   created () {
+    wx.showLoading(this.$config.LOADING_PARAM_OBJ);
     // 登录
     wx.login({
       success: res => {
+        wx.hideLoading();
         this.$http({
           url: '/wx/login.do',
           method: 'post',
@@ -37,9 +39,9 @@ export default {
               // 本地储存用户基础信息
               this.$store.commit('updateUserInfo', res.userInfo);
               // 拿用户的用户角色列表
-              // this.updateRoleList(res.userInfo.roles);
+              this.updateRoleList(res.userInfo.roles);
             } else {
-              this.$store.commit('updateRoleList', ['unregister']);
+              this.$store.commit('updateRoleAuthTree', ['unregister']);
             }
           }
         });
@@ -170,23 +172,31 @@ export default {
       let roleListData = roles;
       for (let i = 0, len = roleListData.length; i < len; i ++) {
         // 过滤转化后台返回角色信息
-        switch (roleList[i].roleType) {
-          case 0:
+        switch (roleListData[i].roleKey) {
+          case 'root':
             roleList.push('super');
             break;
-          case 1:
+          case 'admin':
             roleList.push('admin');
             break;
-          case 2:
+          case 'checker':
             roleList.push('auditor');
             break;
-          case 3:
+          case 'writer':
             roleList.push('inputer');
+            break;
+          case 'common':
+            roleList.push('common');
+            break;
+          case 'visitor':
+            roleList.push('visitor');
             break;
         }
       }
       // 同步到公共状态管理
-      this.$store.commit('updateRoleList', roleList);
+      // mockData
+      this.$store.commit('updateRoleAuthTree', roleList);
+      // this.$store.commit('updateRoleAuthTree', ['common']);
     }
   },
   /**
@@ -211,6 +221,40 @@ page{
 .full-width {
   width: 100%
 }
+.inline-block {
+  display: inline-block;
+}
+.lr-mg-5 {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.lr-mg-10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.fr {
+  float: right;
+}
+.fl {
+  float: left;
+}
+.clearfix {
+  &::before,&::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+/* 行内元素两边对其 */
+.keith {
+  text-align: justify;
+  &::after {
+    display: inline-block;
+    width: 100%;
+    content: '';
+  }
+}
+
 /* .container {
   display: flex;
   flex-direction: column;

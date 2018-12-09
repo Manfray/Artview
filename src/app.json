@@ -10,6 +10,8 @@
     "pages/my/about/main",
     "pages/my/my-message/main",
     "pages/my/audit-resource/main",
+    "pages/my/audit-role/main",
+    "pages/my/audit-role-list/main",
     "pages/my/auditRegistration/main"
   ],
   "window": {

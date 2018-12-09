@@ -78,9 +78,30 @@ export default {
       loadingStatus: false
     }
   },
-  created () {
+  mounted () {
+    this.getWxUserInfo(); // 不能放在created中，页面一加载就会执行，还没有调用户授权接口的话就会报错
   },
   methods: {
+    // 获取用户的授权后的敏感数据, 同步到全局
+    getWxUserInfo () {
+      wx.showLoading({ title: '加载中', mask: true }); // 全局的loading配置对象储存到$data中
+      wx.getUserInfo({
+        success: (res) => { // 里面函数有this,所以用箭头函数把上下文的this绑定到一起
+          wx.hideLoading();
+          // 存储用户敏感信息之加密码
+          this.$store.commit('updateEncryptedObj', {
+            iv: res.iv,
+            encryptedData: res.encryptedData
+          });
+          // 存储用户敏感信息之加密码
+          this.$store.commit('updateWxUserInfo', res.userInfo);
+        },
+        fail (res) {
+          console.error(res);
+          wx.hideLoading();
+        }
+      })
+    },
     // 选择性别事件
     bindPickerChange: function(e) {
       let val = e.target.value;
@@ -109,8 +130,8 @@ export default {
       // this.formObj[componentId] = target.value;
       // console.log('[zan:field:blur]', componentId, target, detail)
     },
+    // 点击注册按钮
     submitRegisterMessage () {
-      this.loadingStatus = true;
       this.$http({
         url: '/wx/user/add.do',
         method: 'post',
@@ -119,13 +140,13 @@ export default {
           sex: this.formObj.sex,
           phone: this.formObj.phone,
           answer: this.formObj.reason,
+          iv: this.$store.state.encryptedObj.iv,
+          encryptedData: this.$store.state.encryptedObj.encryptedData
         }, {userID: this.$store.state.userInfo.uid}),
         success: res => {
           console.log(res);
-          this.loadingStatus = false;
         },
         fail:() => {
-          this.loadingStatus = false;
         }
       });
     }
