@@ -67,11 +67,11 @@ export default {
       objectArray: [
         {
           sex: 0,
-          sexName: '男'
+          sexName: '女'
         },
         {
           sex: 1,
-          sexName: '女'
+          sexName: '男'
         }
       ],
       selectSexIndex: 0,
@@ -116,7 +116,10 @@ export default {
     },
     handleZanFieldChange (e) {
       const { componentId, target, detail } = e;
+      console.log('修改后新的值为');
+      console.log(e.target.value);
       this.formObj[componentId] = target.value;
+      console.log(this.formObj[componentId]);
     },
     handleZanFieldFocus (e) {
       const { componentId, target, detail } = e
@@ -132,19 +135,36 @@ export default {
     },
     // 点击注册按钮
     submitRegisterMessage () {
+      let sendData = {
+        nickName: this.formObj.name,
+        gender: this.formObj.sex,
+        phone: this.formObj.phone,
+        reason: this.formObj.reason,
+        iv: this.$store.state.encryptedObj.iv,
+        encryptedData: this.$store.state.encryptedObj.encryptedData
+      };
+      // 本地储存用户基础信息
+      this.$store.commit('updateUserInfo', sendData);
+      console.log(sendData);
       this.$http({
         url: '/wx/user/add.do',
         method: 'post',
-        data: Object.assign({}, {
-          nickName: this.formObj.name,
-          sex: this.formObj.sex,
-          phone: this.formObj.phone,
-          answer: this.formObj.reason,
-          iv: this.$store.state.encryptedObj.iv,
-          encryptedData: this.$store.state.encryptedObj.encryptedData
-        }, {userID: this.$store.state.userInfo.uid}),
+        data: sendData,
         success: res => {
-          console.log(res);
+          wx.showModal({
+            title: '审核',
+            content: '您的信息已提交到管理员审核，请耐心等候！',
+            showCancel: false,
+            success: (res) => {
+              console.log(res);
+              if (res.confirm) {
+                // 全局记录用户审核状态
+                this.$store.commit('updateUserAuditStatus', 2);
+                // 返回进入到授权页的前一页
+                wx.navigateBack();
+              }
+            }
+          });
         },
         fail:() => {
         }

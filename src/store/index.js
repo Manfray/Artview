@@ -15,8 +15,9 @@ const store = new Vuex.Store({
       iv: '',
       encryptedData: ''
     },
+    userRoleList: [],
     userAuditStatus: 1, // 用户审核状态 1:未注册 2：审核中 3:被拒绝 4: 已通过
-    accessTree: {} // 角色权限树
+    accessTree: {}, // 角色权限树
   },
   mutations: {
     updateCustomLoginStatus (state, val) {
@@ -32,23 +33,23 @@ const store = new Vuex.Store({
       /**
        * 通过用户角色列表，返回用户每个页面的权限数组，再遍历生成最终的权限树
        */
-      let roleList = val; // 获取到用户的角色列表 用户角色列表 eg: ['super', 'admin']
+      let roleList = val; // 获取到用户的角色列表 用户角色列表 eg: ['root', 'admin']
       let pageArr = ['my']; // 一起有多少个页面参与权限，若有增加的话，需要与accessItem，accessTree, itemTotal同步
       // 同步用户的角色权限树
       let accessItem = { // 五种角色状态，在不同的页面拥有不同的权限
         unregister: {
           my: ['myMessages', 'personalPage', 'about', 'register']
         },
-        super: {
+        root: {
           my: ['myMessages', 'personalPage', 'about', 'userManagement', 'enpowerAdmins']
         },
         admin: {
           my: ['myMessages', 'personalPage', 'about', 'userManagement', 'logPage', 'powerForInputRes', 'powerForAuditRes']
         },
-        auditor: {
+        checker: {
           my: ['myMessages', 'personalPage', 'about', 'auditResourse']
         },
-        inputer: {
+        writer: {
           my: ['myMessages', 'personalPage', 'about']
         },
         common: {
@@ -62,8 +63,8 @@ const store = new Vuex.Store({
         my:{
           myMessages: false, // common
           register: false, // unregister
-          userManagement: false, // super admin 
-          enpowerAdmins: false, // 管理员授权 super
+          userManagement: false, // root admin 
+          enpowerAdmins: false, // 管理员授权 root
           logPage: false, // 查看日志 admin
           powerForInputRes: false, // 资源录入授权 admin
           powerForAuditRes: false, // 资源审核授权 admin
@@ -118,8 +119,8 @@ const store = new Vuex.Store({
         my:{
           myMessages: true, // common
           register: false, // unregister
-          userManagement: true, // super admin 
-          enpowerAdmins: false, // 管理员授权 super
+          userManagement: true, // root admin 
+          enpowerAdmins: false, // 管理员授权 root
           logPage: false, // 查看日志 admin
           powerForInputRes: true, // 资源录入授权 admin
           powerForAuditRes: false, // 资源审核授权 admin
@@ -141,6 +142,9 @@ const store = new Vuex.Store({
     },
     updateWxUserInfo (state, val) {
       state.wxUserInfo = val
+    },
+    updateUserRoleList (state, val) {
+      state.userRoleList = val
     },
   }
 })

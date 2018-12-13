@@ -88,6 +88,18 @@ export default {
   },
   methods: {
     navigeteClick (pageKey) {
+      // 判断用户审核状态
+      if (this.userAuditStatusState === 2) { // 审核中
+        // 点击我的消息，个人信息注册申请时弹出个人信息正在审核中
+        if (['myMessage', 'register'].indexOf(pageKey) > -1) {
+          wx.showModal({
+            content: '等待管理员审核中...',
+            showCancel: false
+          });
+          return;
+        }
+      }
+      // 根据用户点击项，导航到不同页面
       switch (pageKey) {
         case 'myMessage':
           wx.navigateTo({
@@ -180,9 +192,8 @@ export default {
     // this.getUserInfo()
   },
   computed: {
-    // 根据用户角色状态分流
-    userRoleState () {
-      return this.$store.state.userRole;
+    userAuditStatusState () {
+      return this.$store.state.userAuditStatus;
     },
     /**
      * 计算得到的用户权限树，每个权限的计算值

@@ -64,40 +64,42 @@ export default {
       }
       return userList;
     }
+    let res1 = [
+      {
+        "uid": 10,
+        "nickName": "龚明辉",
+        "roles": [{
+          "remark": "",
+          "roleKey": "admin",
+          "roleName": "管理员",
+          "roleType": 0
+        }, {
+          "remark": "",
+          "roleKey": "writer",
+          "roleName": "录入人员",
+          "roleType": 0
+        }],
+        "createTime": "20180927 23:34:29",
+        "userStatus": "待审核"
+      }, {
+        "uid": 11,
+        "nickName": "薛丽飞",
+        "roles": [{
+          "remark": "",
+          "roleKey": "writer",
+          "roleName": "录入人员",
+          "roleType": 0
+        }],
+        "createTime": "20180927 23:34:29",
+        "userStatus": "被拒绝"
+      }
+    ]
+    // mockdata
+    this.userList = formatUserList(res1);
     this.$http({
       url: '/wx/user/queryUsers.do',
       method: 'get',
       success: res => {
-        let res1 = [
-          {
-            "uid": 10,
-            "nickName": "龚明辉",
-            "roles": [{
-              "remark": "",
-              "roleKey": "admin",
-              "roleName": "管理员",
-              "roleType": 0
-            }, {
-              "remark": "",
-              "roleKey": "writer",
-              "roleName": "录入人员",
-              "roleType": 0
-            }],
-            "createTime": "20180927 23:34:29",
-            "userStatus": "已审核"
-          }, {
-            "uid": 11,
-            "nickName": "薛丽飞",
-            "roles": [{
-              "remark": "",
-              "roleKey": "writer",
-              "roleName": "录入人员",
-              "roleType": 0
-            }],
-            "createTime": "20180927 23:34:29",
-            "userStatus": "被拒绝"
-          }
-        ]
         this.userList = formatUserList(res.data);
         console.log(this.userList);
       }

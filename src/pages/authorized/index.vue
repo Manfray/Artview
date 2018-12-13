@@ -30,6 +30,10 @@ export default {
       if(e.target.encryptedData) { // 用户点击允许授权
         // 返回进入到授权页的前一页
         wx.navigateBack();
+        // 授权成功直接进入到注册页
+        wx.navigateTo({
+          url: "../my/register/main"
+        })
       } else { // 用户点击拒绝
         this.authStatus = 'refused'
       }

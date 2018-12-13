@@ -79,17 +79,14 @@ export default {
     ensureOperate () {
       console.log(this.selectedUsers);
       let API = this.operateKey === 'add' ? '/wx/role/batchAddUserRole.do' : '/wx/role/batchdelUserRole.do';
-      let sendData = [];
-      for (let i = 0, len = this.selectedUsers.length; i < len; i++) {
-        sendData.push({
-          roleKey: this.roleKey,
-          uid: this.selectedUsers[i]
-        });
-      }
+      let sendData = {
+        roleKey: this.roleKey,
+        uids: this.selectedUsers
+      };
       this.$http({
         url: API,
         method: 'post',
-        data: JSON.stringify(sendData),
+        data: sendData,
         success: res => {
           wx.showToast({
             title: '操作成功！'
