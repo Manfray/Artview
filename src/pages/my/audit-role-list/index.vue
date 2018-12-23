@@ -88,8 +88,10 @@ export default {
         method: 'post',
         data: sendData,
         success: res => {
+          this.getMulList();
           wx.showToast({
-            title: '操作成功！'
+            title: '操作成功！',
+            duration: 2000
           });
         }
       });

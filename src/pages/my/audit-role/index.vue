@@ -31,7 +31,7 @@ export default {
     this.roleKey = paramsObj.rolekey;
     this.roleName = this.$tool.getRoleNameByRoleKey(this.$config.$DATA.ROLE_KEY_MAP, this.roleKey);
     wx.setNavigationBarTitle({
-      title: `${this.roleName}授权`
+      title: `${this.roleName}`
     })
   },
   methods: {

@@ -10,7 +10,7 @@
             </template>
           </div>
           <div v-else class="fr">
-            <span class="user_status_icon">待审核</span>
+            <span class="user_status_icon for_audit">待审核</span>
           </div>
         </div>
         <div v-show="item.userStatus === '待审核' && item.showContent" class="collapse-body">
@@ -181,26 +181,30 @@ export default {
   }
   .user_status_icon{
     display: inline-block;
-    padding: 2px 7px;
-    margin: 0 7px;
-    color: white;
+    color: green;
     vertical-align: middle;
     border-radius: 4px;
-    background-color: #E64340;
     font-size: 13px;
     height: 15px;
+    padding: 0 5px;
     line-height: 15px;
+    &.for_audit {
+      padding: 2px 7px;
+      margin: 0 7px;
+      color: white;
+      background-color: #E64340;
+    }
     &.admin{
-      background-color: orange;
+      color: purple;
     }
     &.checker{
-      background-color: green;
+      color: orange;
     }
     &.writer{
-      background-color: gold;
+      color: gold;
     }
     &.common{
-      background-color: pink;
+      color: pink;
     }
   }
 </style>
